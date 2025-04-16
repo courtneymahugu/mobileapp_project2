@@ -13,6 +13,8 @@ struct LoginView: View {
     @State private var email = ""
     @State private var password = ""
     @State private var errorMessage = ""
+    @State private var isLoggedIn = false
+    @State private var isRegistering = false
 
     var body: some View {
         VStack {
@@ -39,8 +41,19 @@ struct LoginView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
+            Button("Don't have an account? Sign Up") {
+                isRegistering = true
+            }
+            .foregroundColor(.blue)
+            .padding(.top, 10)
         }
         .padding()
+        .fullScreenCover(isPresented: $isLoggedIn) {
+                    FeedView() // Show this after login
+                }
+        .fullScreenCover(isPresented: $isRegistering) {
+            RegisterView()
+        }
     }
 
     func logInUser() {
@@ -50,6 +63,7 @@ struct LoginView: View {
                 switch result {
                 case .success:
                     print("User logged in successfully")
+                    isLoggedIn = true
                 case .failure(let error):
                     errorMessage = error.localizedDescription
                 }

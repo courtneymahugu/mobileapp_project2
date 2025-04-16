@@ -9,12 +9,10 @@ import SwiftUI
 import ParseSwift
 
 struct RegisterView: View {
-//    var body: some View {
-//        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-//    }
     @State private var email = ""
     @State private var password = ""
     @State private var errorMessage = ""
+    @Environment(\.dismiss) var dismiss
 
     var body: some View {
         VStack {
@@ -41,6 +39,11 @@ struct RegisterView: View {
                     .foregroundColor(.white)
                     .cornerRadius(10)
             }
+            Button("Already have an account? Log in") {
+                            dismiss()
+                        }
+                        .foregroundColor(.blue)
+                        .padding(.top, 10)
         }
         .padding()
     }
@@ -54,6 +57,7 @@ struct RegisterView: View {
             switch result {
             case .success:
                 print("User registered successfully")
+                dismiss()
             case .failure(let error):
                 errorMessage = error.localizedDescription
             }

@@ -20,6 +20,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             clientKey: "SIF5QQHJjdMLyAWWVYnJh5Gl9TIbG6ESXLBBh3vS",  // Back4App Client Key
             serverURL: URL(string: "https://parseapi.back4app.com")!
         )
+        if User.current != nil {
+            User.logout { result in
+                switch result {
+                case .success:
+                    print("Cleared stale session")
+                case .failure(let error):
+                    print("Logout error: \(error.localizedDescription)")
+                }
+            }
+        }
         
         return true
     }
