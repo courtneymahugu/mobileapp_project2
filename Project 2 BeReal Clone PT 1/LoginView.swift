@@ -1,6 +1,6 @@
 //
 //  LoginView.swift
-//  Project 2 BeReal Clone PT 1
+//  Project 3 BeReal Clone PT 2
 //
 //  Created by Courtney Mahugu on 3/10/25.
 //
@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 import ParseSwift
+import UserNotifications
 
 struct LoginView: View {
     @State private var email = ""
@@ -64,10 +65,36 @@ struct LoginView: View {
                 case .success:
                     print("User logged in successfully")
                     isLoggedIn = true
+                    UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+                        if granted {
+                            print("Notifications permission granted.")
+                            schedulePostReminder()
+                        } else if let error = error {
+                            print("Permission error: \(error.localizedDescription)")
+                        }
+                    }
                 case .failure(let error):
                     errorMessage = error.localizedDescription
                 }
             }
         }
+    
+    func schedulePostReminder() {
+        let content = UNMutableNotificationContent()
+        content.title = "Time to BeReal!"
+        content.body = "Don’t forget to post your daily update."
+        content.sound = UNNotificationSound.default
+
+        // Every hour (3600 seconds)
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 3600, repeats: true)
+
+        let request = UNNotificationRequest(identifier: "BeRealReminder", content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Notification scheduling error: \(error.localizedDescription)")
+            }
+        }
+    }
 }
 

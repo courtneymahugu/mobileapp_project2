@@ -1,6 +1,6 @@
 //
 //  Post.swift
-//  Project 2 BeReal Clone PT 1
+//  Project 3 BeReal Clone PT 2
 //
 //  Created by Courtney Mahugu on 3/10/25.
 //
@@ -20,5 +20,9 @@ struct Post: ParseObject {
     var username: String? // Assuming you have a username field in your Post
     var caption: String?  // Caption or other details
     var image: ParseFile? // Image file (ParseFile)
+    
+    var locationName: String?
+    var latitude: Double?
+    var longitude: Double?
 
 }
